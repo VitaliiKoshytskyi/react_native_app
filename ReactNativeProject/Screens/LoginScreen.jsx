@@ -1,53 +1,76 @@
 import {
-  StyleSheet,
   Text,
-  TextInput,
   View,
+  TextInput,
+  StyleSheet,
   TouchableOpacity,
+  Keyboard,
+  TouchableWithoutFeedback,
+  Platform,
   KeyboardAvoidingView,
 } from "react-native";
 
 export default function LoginScreen() {
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <View style={styles.box}>
-        <Text style={styles.title}>Увійти</Text>
-        <View>
-          <TextInput
-            style={styles.input}
-            placeholder="Адреса електронної пошти"
-          />
-          <TextInput style={styles.input} placeholder="Пароль" />
-          <TouchableOpacity style={styles.hideBtn}>
-            <Text style={styles.hideText}>Показати</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <KeyboardAvoidingView
+          style={styles.keyboard}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <View style={styles.registraion_wrapper}>
+            <View style={styles.registraion_box}>
+              <Text style={styles.text}>Увійти</Text>
+              <View style={styles.form}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Адреса електронної пошти"
+                />
+                <TextInput style={styles.input} secureTextEntry={true} placeholder="Пароль" />
+                <TouchableOpacity style={styles.hideBtn}>
+                  <Text style={styles.hideText}>Показати</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+        <View style={styles.box}>
+          <TouchableOpacity style={styles.btn}>
+            <Text style={styles.btnText}>Увійти</Text>
           </TouchableOpacity>
+          <Text style={styles.signin_text}>
+            Немає акаунту?{" "}
+            <Text style={[styles.signin_text, styles.signin_link]}>
+              Зареєструватися
+            </Text>
+          </Text>
         </View>
-        <TouchableOpacity style={styles.btn}>
-          <Text style={styles.btnText}>Увійти</Text>
-        </TouchableOpacity>
-        <Text style={styles.link}>Немає акаунту? Зареєструватися</Text>
       </View>
-    </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 }
-
 const styles = StyleSheet.create({
-  box: {
-    width: "100%",
-    backgroundColor: "#fff",
-    paddingTop: 32,
-    paddingHorizontal: 16,
-    paddingBottom: 144,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
+  container: {
+    flex: 1,
   },
-  title: {
-    fontFamily: "Roboto-medium",
-    fontSize: 30,
-    marginBottom: 32,
-    textAlign: "center",
+  keyboard: {
+    flex: 1,
+  },
+
+  registraion_wrapper: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+  profile_photo: {
+    width: 120,
+    height: 120,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 16,
+    position: "absolute",
+    top: 0,
+    left: "50%",
+    marginLeft: -60,
+    marginTop: -60,
   },
   input: {
     minWidth: 343,
@@ -64,13 +87,36 @@ const styles = StyleSheet.create({
   },
   hideBtn: {
     position: "absolute",
-    right: 16,
+    right: 26,
     bottom: 31,
   },
   hideText: {
     color: "#1B4371",
     fontFamily: "Roboto-regular",
     fontSize: 16,
+  },
+  icon: {
+    position: "absolute",
+    top: "65%",
+    left: "90%",
+  },
+  registraion_box: {
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    backgroundColor: "#fff",
+    justifyContent: "flex-end",
+  },
+  text: {
+    marginTop: 32,
+    marginBottom: 33,
+    fontFamily: "Roboto-regular",
+    fontSize: 30,
+    lineHeight: 35,
+    letterSpacing: 0.01,
+    textAlign: "center",
+    color: "#212121",
   },
   btn: {
     minWidth: "100%",
@@ -87,11 +133,34 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-regular",
     fontSize: 16,
   },
-  link: {
-    marginTop: 16,
-    color: "#1B4371",
+  form: {
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
+
+  marginBottom: {
+    marginBottom: 43,
+  },
+  box: {
+    backgroundColor: "#fff",
+    alignItems: "center",
+  },
+  btn: {
+    width: 343,
+    borderRadius: 100,
+    backgroundColor: "#FF6C00",
     textAlign: "center",
+    paddingTop: 16,
+    paddingBottom: 16,
+    color: "#FFFFFF",
+    marginBottom: 16,
+  },
+  signin_text: {
+    marginBottom: 111,
+    color: "#1B4371",
     fontFamily: "Roboto-regular",
     fontSize: 16,
+    lineHeight: 19,
   },
+  signin_link: { textDecorationLine: "underline" },
 });
