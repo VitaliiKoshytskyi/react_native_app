@@ -1,7 +1,15 @@
-import {Text,View,TextInput,StyleSheet,TouchableOpacity,Keyboard,TouchableWithoutFeedback,Platform,KeyboardAvoidingView,} from "react-native";
+import {Text,View,StyleSheet,TouchableOpacity,Keyboard,TouchableWithoutFeedback,Platform,KeyboardAvoidingView,} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import Input from "../Components/Input";
+import Button from "../Components/Button";
+import React, { useState } from "react";
 
 export default function RegistrationScreen() {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
   return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -16,20 +24,18 @@ export default function RegistrationScreen() {
                 </View>
                 <Text style={styles.text}>Реєстрація</Text>
                 <View style={styles.form}>
-                  <TextInput style={styles.input} placeholder="Логін"/>
-                  <TextInput style={styles.input} placeholder="Адреса електронної пошти"/>
-                  <TextInput style={styles.input} secureTextEntry={true} placeholder="Пароль" />
-                  <TouchableOpacity style={styles.hideBtn}>
-                    <Text style={styles.hideText}>Показати</Text>
+                 <Input placeholder="Логін" inputMode="text" />
+                   <Input placeholder="Адреса електронної пошти" inputMode="email"  />
+                   <Input placeholder="Пароль" inputMode="text" secureTextEntry={!isPasswordVisible}  />
+                  <TouchableOpacity style={styles.hideBtn} onPress={togglePasswordVisibility}>
+                    <Text style={styles.hideText}>{isPasswordVisible ? 'Приховати' : 'Показати'}</Text>
                   </TouchableOpacity>
                 </View>
               </View>
             </View>
           </KeyboardAvoidingView>
           <View style={styles.box}>
-            <TouchableOpacity style={styles.btn}>
-              <Text style={styles.btnText}>Зареєстуватися</Text>
-            </TouchableOpacity>
+             <Button text="Зареєстуватися" />
             <Text style={styles.loginText}>Вже є акаунт? Увійти</Text>
           </View>
         </View>

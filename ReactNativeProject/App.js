@@ -19,8 +19,8 @@ export default function App() {
    return (
      <>
        <ImageBackground source={bkgImage} style={styles.image}>
-          {/* <RegistrationScreen /> */}
-        <LoginScreen />
+          <RegistrationScreen />
+        {/* <LoginScreen /> */}
        </ImageBackground>
      </>
       
