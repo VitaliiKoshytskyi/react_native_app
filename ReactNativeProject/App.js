@@ -1,9 +1,8 @@
 import {ImageBackground, StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import bkgImage from "./assets/images/Photo.png"
-import { StatusBar } from 'expo-status-bar';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import LoginScreen from './Screens/LoginScreen';
+import RegistrationScreen from './Screens/RegistrationScreen';
 
 
 export default function App() {

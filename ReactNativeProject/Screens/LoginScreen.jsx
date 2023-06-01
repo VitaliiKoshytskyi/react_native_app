@@ -1,31 +1,16 @@
-import {
-  Text,
-  View,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  Keyboard,
-  TouchableWithoutFeedback,
-  Platform,
-  KeyboardAvoidingView,
-} from "react-native";
+import {Text,View,TextInput,StyleSheet,TouchableOpacity,Keyboard,TouchableWithoutFeedback,Platform,KeyboardAvoidingView,} from "react-native";
 
 export default function LoginScreen() {
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <KeyboardAvoidingView
-          style={styles.keyboard}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
-          <View style={styles.registraion_wrapper}>
-            <View style={styles.registraion_box}>
+        <KeyboardAvoidingView style={styles.innerBox} behavior={Platform.OS === "ios" ? "padding" : "height"} >
+          <View style={styles.registraionWrapper}>
+            <View style={styles.registraionBox}>
               <Text style={styles.text}>Увійти</Text>
               <View style={styles.form}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Адреса електронної пошти"
-                />
+                <TextInput style={styles.input} placeholder="Адреса електронної пошти"/>
                 <TextInput style={styles.input} secureTextEntry={true} placeholder="Пароль" />
                 <TouchableOpacity style={styles.hideBtn}>
                   <Text style={styles.hideText}>Показати</Text>
@@ -38,9 +23,8 @@ export default function LoginScreen() {
           <TouchableOpacity style={styles.btn}>
             <Text style={styles.btnText}>Увійти</Text>
           </TouchableOpacity>
-          <Text style={styles.signin_text}>
-            Немає акаунту?{" "}
-            <Text style={[styles.signin_text, styles.signin_link]}>
+          <Text style={styles.signinText}> Немає акаунту?{" "}
+            <Text style={[styles.signinText, styles.signinLink]}>
               Зареєструватися
             </Text>
           </Text>
@@ -53,24 +37,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  keyboard: {
+  innerBox: {
     flex: 1,
   },
 
-  registraion_wrapper: {
+  registraionWrapper: {
     flex: 1,
     justifyContent: "flex-end",
-  },
-  profile_photo: {
-    width: 120,
-    height: 120,
-    backgroundColor: "#F6F6F6",
-    borderRadius: 16,
-    position: "absolute",
-    top: 0,
-    left: "50%",
-    marginLeft: -60,
-    marginTop: -60,
   },
   input: {
     minWidth: 343,
@@ -95,12 +68,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-regular",
     fontSize: 16,
   },
-  icon: {
-    position: "absolute",
-    top: "65%",
-    left: "90%",
-  },
-  registraion_box: {
+  registraionBox: {
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     borderBottomLeftRadius: 0,
@@ -118,15 +86,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#212121",
   },
-  btn: {
-    minWidth: "100%",
-    height: 51,
-    marginTop: 27,
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    borderRadius: 100,
-    backgroundColor: "#FF6C00",
-  },
   btnText: {
     color: "#fff",
     textAlign: "center",
@@ -136,10 +95,6 @@ const styles = StyleSheet.create({
   form: {
     paddingLeft: 16,
     paddingRight: 16,
-  },
-
-  marginBottom: {
-    marginBottom: 43,
   },
   box: {
     backgroundColor: "#fff",
@@ -155,12 +110,12 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     marginBottom: 16,
   },
-  signin_text: {
+  signinText: {
     marginBottom: 111,
     color: "#1B4371",
     fontFamily: "Roboto-regular",
     fontSize: 16,
     lineHeight: 19,
   },
-  signin_link: { textDecorationLine: "underline" },
+  signinLink: { textDecorationLine: "underline" },
 });
