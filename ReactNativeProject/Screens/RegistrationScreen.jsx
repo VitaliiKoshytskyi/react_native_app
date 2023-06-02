@@ -6,6 +6,16 @@ import React, { useState } from "react";
 
 export default function RegistrationScreen() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+   const onSubmit = () => {
+        setName("");
+        setEmail("");
+        setPassword("");
+        console.log({ name, email, password });
+    };
   
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
@@ -24,9 +34,9 @@ export default function RegistrationScreen() {
                 </View>
                 <Text style={styles.text}>Реєстрація</Text>
                 <View style={styles.form}>
-                 <Input placeholder="Логін" inputMode="text" />
-                   <Input placeholder="Адреса електронної пошти" inputMode="email"  />
-                   <Input placeholder="Пароль" inputMode="text" secureTextEntry={!isPasswordVisible}  />
+                   <Input placeholder="Логін" inputMode="text"  value={name} setValue={setName}/>
+                   <Input placeholder="Адреса електронної пошти" inputMode="email" value={email} setValue={setEmail} />
+                   <Input placeholder="Пароль" inputMode="text" secureTextEntry={!isPasswordVisible} value={password} setValue={setPassword} />
                   <TouchableOpacity style={styles.hideBtn} onPress={togglePasswordVisibility}>
                     <Text style={styles.hideText}>{isPasswordVisible ? 'Приховати' : 'Показати'}</Text>
                   </TouchableOpacity>
@@ -35,7 +45,7 @@ export default function RegistrationScreen() {
             </View>
           </KeyboardAvoidingView>
           <View style={styles.box}>
-             <Button text="Зареєстуватися" />
+             <Button text="Зареєстуватися" onPress={onSubmit}/>
             <Text style={styles.loginText}>Вже є акаунт? Увійти</Text>
           </View>
         </View>

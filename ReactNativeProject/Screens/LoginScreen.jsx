@@ -4,7 +4,15 @@ import Button from "../Components/Button";
 import React, { useState } from "react";
 
 export default function LoginScreen() {
-   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onSubmit = () => {
+        setEmail("");
+        setPassword("");
+        console.log({ email, password });
+    };
   
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
@@ -18,8 +26,8 @@ export default function LoginScreen() {
             <View style={styles.registraionBox}>
               <Text style={styles.text}>Увійти</Text>
               <View style={styles.form}>
-                <Input placeholder="Адреса електронної пошти" inputMode="email" />
-                <Input placeholder="Пароль" inputMode="text" secureTextEntry={!isPasswordVisible}  />
+                <Input placeholder="Адреса електронної пошти" inputMode="email" value={email} setValue={setEmail} />
+                <Input placeholder="Пароль" inputMode="text" secureTextEntry={!isPasswordVisible} value={password} setValue={setPassword} />
                   <TouchableOpacity style={styles.hideBtn} onPress={togglePasswordVisibility}>
                     <Text style={styles.hideText}>{isPasswordVisible ? 'Приховати' : 'Показати'}</Text>
                   </TouchableOpacity>
@@ -28,7 +36,7 @@ export default function LoginScreen() {
           </View>
         </KeyboardAvoidingView>
         <View style={styles.box}>
-           <Button text="Увійти" />
+           <Button text="Увійти" onPress={onSubmit} />
           <Text style={styles.signinText}> Немає акаунту?{" "}
             <Text style={[styles.signinText, styles.signinLink]}>
               Зареєструватися
