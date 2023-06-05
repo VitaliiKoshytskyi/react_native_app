@@ -1,9 +1,14 @@
-import {Text,View,StyleSheet,TouchableOpacity,Keyboard,TouchableWithoutFeedback,Platform,KeyboardAvoidingView,} from "react-native";
-import Input from "../Components/Input";
-import Button from "../Components/Button";
+import {Text,View,ImageBackground,StyleSheet, useWindowDimensions, TouchableOpacity,Keyboard,TouchableWithoutFeedback,Platform,KeyboardAvoidingView,} from "react-native";
+import Input from "../../Components/Input";
+import Button from "../../Components/Button";
 import React, { useState } from "react";
+import { useNavigation } from '@react-navigation/native';
+import bkgImage from "../../assets/images/Photo.png"
+
 
 export default function LoginScreen() {
+  const navigation = useNavigation();
+   const { height } = useWindowDimensions();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,6 +26,7 @@ export default function LoginScreen() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
+          <ImageBackground style={(styles.image, { height })} source={bkgImage}>
         <KeyboardAvoidingView style={styles.innerBox} behavior={Platform.OS === "ios" ? "padding" : "height"} >
           <View style={styles.registraionWrapper}>
             <View style={styles.registraionBox}>
@@ -36,13 +42,14 @@ export default function LoginScreen() {
           </View>
         </KeyboardAvoidingView>
         <View style={styles.box}>
-           <Button text="Увійти" onPress={onSubmit} />
+            <Button text="Увійти" onPress={onSubmit} />
           <Text style={styles.signinText}> Немає акаунту?{" "}
-            <Text style={[styles.signinText, styles.signinLink]}>
+            <Text  onPress={() => navigation.navigate("Registration")} style={[styles.signinText, styles.signinLink]}>
               Зареєструватися
             </Text>
-          </Text>
-        </View>
+              </Text>
+          </View>
+          </ImageBackground>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -57,6 +64,11 @@ const styles = StyleSheet.create({
 
   registraionWrapper: {
     flex: 1,
+    justifyContent: "flex-end",
+  },
+   image: {
+     flex: 1,
+    resizeMode: "cover",
     justifyContent: "flex-end",
   },
   input: {

@@ -1,10 +1,15 @@
-import {Text,View,StyleSheet,TouchableOpacity,Keyboard,TouchableWithoutFeedback,Platform,KeyboardAvoidingView,} from "react-native";
+import {Text,View,StyleSheet,ImageBackground,useWindowDimensions,TouchableOpacity,Keyboard,TouchableWithoutFeedback,Platform,KeyboardAvoidingView,} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import Input from "../Components/Input";
-import Button from "../Components/Button";
+import Input from "../../Components/Input";
+import Button from "../../Components/Button";
 import React, { useState } from "react";
+import { useNavigation } from '@react-navigation/native';
+import bkgImage from "../../assets/images/Photo.png"
+
 
 export default function RegistrationScreen() {
+   const navigation = useNavigation();
+   const { height } = useWindowDimensions();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -23,7 +28,8 @@ export default function RegistrationScreen() {
 
   return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container}>
+      <View style={styles.container}>
+         <ImageBackground style={(styles.image, { height })} source={bkgImage}>
           <KeyboardAvoidingView style={styles.innerBox} behavior={Platform.OS === "ios" ? "padding" : "height"} >
             <View style={styles.registraionBox}>
               <View style={styles.registraionOuterBox}>
@@ -46,8 +52,9 @@ export default function RegistrationScreen() {
           </KeyboardAvoidingView>
           <View style={styles.box}>
              <Button text="Зареєстуватися" onPress={onSubmit}/>
-            <Text style={styles.loginText}>Вже є акаунт? Увійти</Text>
+            <Text  onPress={() => navigation.navigate("Login")} style={styles.loginText}>Вже є акаунт? Увійти</Text>
           </View>
+          </ImageBackground>
         </View>
       </TouchableWithoutFeedback>
   );

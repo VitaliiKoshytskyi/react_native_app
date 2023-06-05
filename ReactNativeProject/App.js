@@ -1,9 +1,12 @@
-import {ImageBackground, StyleSheet, Text, View } from 'react-native';
+import 'react-native-gesture-handler';
+import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
-import bkgImage from "./assets/images/Photo.png"
-import LoginScreen from './Screens/LoginScreen';
-import RegistrationScreen from './Screens/RegistrationScreen';
+import { createStackNavigator } from "@react-navigation/stack";
+import LoginScreen from './Screens/Auth/LoginScreen';
+import RegistrationScreen from './Screens/Auth/RegistrationScreen';
+import { NavigationContainer } from '@react-navigation/native';
 
+const AuthStack = createStackNavigator()
 
 export default function App() {
 
@@ -17,22 +20,14 @@ export default function App() {
     return null;
   }
    return (
-     <>
-       <ImageBackground source={bkgImage} style={styles.image}>
-          {/* <RegistrationScreen /> */}
-        <LoginScreen />
-       </ImageBackground>
-     </>
-      
-      
+     <NavigationContainer>
+       <AuthStack.Navigator initialRouteName="Login">
+           <AuthStack.Screen options={{headerShown:false}} name="Registration" component={RegistrationScreen} />
+           <AuthStack.Screen  options={{headerShown:false}} name="Login" component={LoginScreen} />
+       </AuthStack.Navigator>
+     </NavigationContainer>
+
   )
 }
 
-const styles = StyleSheet.create({
 
-  image: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent:'center'
-  }
-});
