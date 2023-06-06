@@ -51,8 +51,10 @@ export default function RegistrationScreen() {
             </View>
           </KeyboardAvoidingView>
           <View style={styles.box}>
-             <Button text="Зареєстуватися" onPress={onSubmit}/>
-            <Text  onPress={() => navigation.navigate("Login")} style={styles.loginText}>Вже є акаунт? Увійти</Text>
+            <Button text="Зареєстуватися" onPress={onSubmit} />
+            <Text style={styles.loginText}> Вже є акаунт? 
+              <Text onPress={() => navigation.navigate("Login")} style={styles.loginText}> Увійти</Text>
+              </Text>
           </View>
           </ImageBackground>
         </View>
