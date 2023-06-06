@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import PostsScreen from "./PostsScreen";
 import CreatePostsScreen from "./CreatePostsScreen";
 import ProfileScreen from "./ProfileScreen";
+import LogOut from "../../Components/Logout";
 
 const Tabs = createBottomTabNavigator();
 
@@ -28,6 +29,8 @@ export default function HomeScreen() {
         component={PostsScreen}
         options={{
           title: "Публікації",
+          headerTitleAlign: 'center',
+          headerRight: LogOut,
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons name="grid-outline" size={size} color={color} />
           ),
@@ -39,6 +42,7 @@ export default function HomeScreen() {
         component={CreatePostsScreen}
         options={{
           title: "Створити публікацію",
+          headerTitleAlign: 'center',
           tabBarButton: () => (
             <TouchableOpacity
               style={{

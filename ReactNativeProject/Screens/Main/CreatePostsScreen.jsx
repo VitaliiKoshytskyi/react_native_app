@@ -1,4 +1,5 @@
-import { View, Text,StyleSheet  } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+// import Arrow from '../../Components/Arrow'
 
 export default function CreatePostsScreen() {
   return (
