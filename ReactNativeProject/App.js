@@ -11,7 +11,7 @@ import RegistrationScreen from './Screens/Auth/RegistrationScreen';
 import HomeScreen from './Screens/Main/Home';
 
 const AuthStack = createStackNavigator();
-const MainTab = createBottomTabNavigator();
+const MainTab = createStackNavigator();
 
 const useRoute = (isAuth,setLoginStatus) => {
   if (!isAuth) {
