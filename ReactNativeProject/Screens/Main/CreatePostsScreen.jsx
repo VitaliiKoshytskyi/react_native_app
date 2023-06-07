@@ -13,12 +13,14 @@ import { TextInput } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { useState, useEffect } from "react";
 import { requestCameraPermissionsAsync } from "expo-camera";
+import { useNavigation } from '@react-navigation/native';
 initialData = {
   name: "",
   location: "",
 };
 
 export default function CreatePostsScreen() {
+  const navigation = useNavigation();
   const [cameraPermission, setCameraPermission] = useState(null);
   const [keyboard, setKeyboard] = useState(false);
   const [postData, setPostData] = useState(initialData);
@@ -41,6 +43,8 @@ export default function CreatePostsScreen() {
     setKeyboard(false);
   };
   const publish = postData.name && postData.location && image;
+
+  
 
   const takePhoto = async () => {
     let result = await ImagePicker.launchCameraAsync({
@@ -117,7 +121,14 @@ export default function CreatePostsScreen() {
           {publish ? (
             <TouchableOpacity
               style={{ ...styles.btn, backgroundColor: "#FF6C00" }}
-              onPress={() => {}}
+              onPress={() => {
+                navigation.navigate("Home", {
+                  screen: "PostsScreen",
+                  params: { ...postData, photo: image,  },
+                });
+
+              
+              }}
             >
               <Text style={{ fontSize: 16, color: "#FFFFFF" }}>
                 Опублікувати
@@ -125,7 +136,7 @@ export default function CreatePostsScreen() {
             </TouchableOpacity>
           ) : (
             <View style={styles.btn}>
-              <Text style={{ fontSize: 16, color: "#BDBDBD" }}>
+              <Text  style={{ fontSize: 16, color: "#BDBDBD" }}>
                 Опублікувати
               </Text>
             </View>
