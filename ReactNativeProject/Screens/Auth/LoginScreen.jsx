@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import bkgImage from "../../assets/images/Photo.png"
 
 
-export default function LoginScreen() {
+export default function LoginScreen({ setLoginStatus }) {
   const navigation = useNavigation();
    const { height } = useWindowDimensions();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -14,6 +14,7 @@ export default function LoginScreen() {
   const [password, setPassword] = useState("");
 
   const onSubmit = () => {
+    setLoginStatus(true);
         setEmail("");
         setPassword("");
         console.log({ email, password });
@@ -42,7 +43,7 @@ export default function LoginScreen() {
           </View>
         </KeyboardAvoidingView>
         <View style={styles.box}>
-            <Button text="Увійти" onPress={onSubmit} />
+         <Button text="Увійти" onPress={onSubmit}  />
           <Text style={styles.signinText}> Немає акаунту?{" "}
             <Text  onPress={() => navigation.navigate("Registration")} style={[styles.signinText, styles.signinLink]}>
               Зареєструватися

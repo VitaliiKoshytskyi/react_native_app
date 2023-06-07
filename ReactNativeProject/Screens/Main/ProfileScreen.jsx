@@ -11,6 +11,7 @@ import {
   Image,
 } from "react-native";
 import { AntDesign, Feather } from "@expo/vector-icons";
+import Logout from '../../Components/Logout'
 
 export default function ProfileScreen() {
   return (
@@ -30,7 +31,7 @@ export default function ProfileScreen() {
             <Text style={styles.title}>Natali Romanova</Text>
           </View>
           <View style={styles.logout}>
-            {/* <LogOut /> */}
+            <Logout />
           </View>
 
           <View
@@ -78,7 +79,7 @@ export default function ProfileScreen() {
                 }}
               >
                 <Feather name="message-circle" size={24} color="#FF6C00" />
-                <Text>5</Text>
+                <Text>8</Text>
               </View>
               <View
                 style={{

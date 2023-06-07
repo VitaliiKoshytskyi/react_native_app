@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import bkgImage from "../../assets/images/Photo.png"
 
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({setLoginStatus}) {
    const navigation = useNavigation();
    const { height } = useWindowDimensions();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -15,7 +15,8 @@ export default function RegistrationScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-   const onSubmit = () => {
+  const onSubmit = () => {
+     setLoginStatus(true);
         setName("");
         setEmail("");
         setPassword("");
