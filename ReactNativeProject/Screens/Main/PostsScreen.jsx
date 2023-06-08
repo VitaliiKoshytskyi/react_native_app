@@ -5,7 +5,7 @@ import { MaterialIcons, Feather } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 
 export default function PostsScreen({ route }) {
-  console.log("ROUTE PARAMS",route.params)
+  // console.log("ROUTE PARAMS",route.params)
   const navigation = useNavigation();
   const [posts, setPosts] = useState([]);
 
@@ -111,7 +111,6 @@ const styles = StyleSheet.create({
   iconContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    // paddingHorizontal: 16,
     marginTop: 8,
   },
 });
