@@ -1,8 +1,19 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image,FlatList } from "react-native";
 import user from "../../assets/images/user.png";
+import { useState, useEffect } from "react";
 
 export default function PostsScreen({ route }) {
+  const [posts,setPosts] = useState([])
   console.log(route.params)
+
+  useEffect(() => {
+    if (route.params) {
+      setPosts(prevState =>[...prevState,route.params])
+    }
+  }, [route.params])
+  
+console.log('posts',posts)
+
   return (
       <View style={styles.container}>
                 <View style={styles.postsWrapper}>
@@ -14,7 +25,7 @@ export default function PostsScreen({ route }) {
                         </View>
                     </View>
                     <View>
-                      
+          <FlatList data={posts} keyExtractor={(item, index) => index.toString()} renderItem={({ item }) => <View><Image source={{ uri: item.photo }} style={ {width:300,height:200}} /></View>} />
                     </View>
                 </View>
             </View>
