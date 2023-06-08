@@ -121,7 +121,8 @@ export default function CreatePostsScreen() {
           {publish ? (
             <TouchableOpacity
               style={{ ...styles.btn, backgroundColor: "#FF6C00" }}
-              onPress={() => {
+              onPress={() => {setPostData(initialData);
+              setImage(null);
                 navigation.navigate("Home", {
                   screen: "PostsScreen",
                   params: { ...postData, photo: image,  },
@@ -135,7 +136,7 @@ export default function CreatePostsScreen() {
               </Text>
             </TouchableOpacity>
           ) : (
-            <View style={styles.btn}>
+            <View  style={styles.btn}>
               <Text  style={{ fontSize: 16, color: "#BDBDBD" }}>
                 Опублікувати
               </Text>
