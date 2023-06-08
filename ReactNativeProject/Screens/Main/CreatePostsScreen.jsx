@@ -9,6 +9,7 @@ import {
   Image,
 } from "react-native";
 import { MaterialIcons, Feather } from "@expo/vector-icons";
+import * as Location from 'expo-location';
 import { TextInput } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { useState, useEffect } from "react";
@@ -16,7 +17,7 @@ import { requestCameraPermissionsAsync } from "expo-camera";
 import { useNavigation } from '@react-navigation/native';
 initialData = {
   name: "",
-  location: "",
+  place: "",
 };
 
 export default function CreatePostsScreen() {
@@ -25,6 +26,7 @@ export default function CreatePostsScreen() {
   const [keyboard, setKeyboard] = useState(false);
   const [postData, setPostData] = useState(initialData);
   const [image, setImage] = useState(null);
+  const [location, setLocation] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -42,7 +44,7 @@ export default function CreatePostsScreen() {
     Keyboard.dismiss();
     setKeyboard(false);
   };
-  const publish = postData.name && postData.location && image;
+  const publish = postData.name && postData.place && image;
 
   
 
@@ -56,6 +58,22 @@ export default function CreatePostsScreen() {
       setImage(result.assets[0].uri);
     }
   };
+   useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      const coords = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+      setLocation(coords);
+    })();
+  }, []);
+console.log("location",location)
 
   return (
     <TouchableWithoutFeedback onPress={hideKeyboard}>
@@ -103,12 +121,12 @@ export default function CreatePostsScreen() {
           ></TextInput>
           <View style={{ position: "relative", width: "100%" }}>
             <TextInput
-              value={postData.location}
+              value={postData.place}
               style={{ ...styles.input, paddingLeft: 28 }}
               placeholder="Місцевість..."
               onFocus={() => setKeyboard(true)}
               onChangeText={(value) =>
-                setPostData((prev) => ({ ...prev, location: value }))
+                setPostData((prev) => ({ ...prev, place: value }))
               }
             ></TextInput>
             <Feather
@@ -125,7 +143,7 @@ export default function CreatePostsScreen() {
               setImage(null);
                 navigation.navigate("Home", {
                   screen: "PostsScreen",
-                  params: { ...postData, photo: image,  },
+                  params: { ...postData, photo: image, location:location },
                 });
 
               
