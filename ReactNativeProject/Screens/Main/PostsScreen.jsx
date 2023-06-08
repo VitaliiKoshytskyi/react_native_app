@@ -1,8 +1,11 @@
-import { View, Text, StyleSheet, Image, FlatList } from "react-native";
+import { View, Text, StyleSheet, Image, FlatList,TouchableOpacity, } from "react-native";
 import user from "../../assets/images/user.png";
 import { useState, useEffect } from "react";
+import { MaterialIcons, Feather } from "@expo/vector-icons";
+import { useNavigation } from '@react-navigation/native';
 
 export default function PostsScreen({ route }) {
+  const navigation = useNavigation();
   const [posts, setPosts] = useState([]);
   console.log(route.params);
 
@@ -33,8 +36,30 @@ export default function PostsScreen({ route }) {
               <View style={styles.imageContainer}>
                 <Image source={{ uri: item.photo }} style={styles.image} />
               </View>
+                
             )}
           />
+         <View
+                style={{
+                  gap: 9,
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Feather onPress={()=>navigation.navigate('Comments')} name="message-circle" size={24} color="#FF6C00" />
+                <Text>8</Text>
+          </View>
+           <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
+            >
+              <Feather onPress={()=>navigation.navigate('Map')}
+                style={styles.pin}
+                name="map-pin"
+                size={24}
+                color="#BDBDBD"
+              />
+              <Text style={{ textDecorationLine: "underline" }}>Ukraine</Text>
+            </View>
         </View>
       </View>
     </View>

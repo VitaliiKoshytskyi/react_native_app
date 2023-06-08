@@ -9,6 +9,8 @@ import { useState, useEffect } from "react";
 import LoginScreen from './Screens/Auth/LoginScreen';
 import RegistrationScreen from './Screens/Auth/RegistrationScreen';
 import HomeScreen from './Screens/Main/Home';
+import CommentsScreen from './Screens/Main/CommentsScreen'
+import MapScreen from './Screens/Main/MapScreen'
 
 const AuthStack = createStackNavigator();
 const MainTab = createStackNavigator();
@@ -27,7 +29,9 @@ const useRoute = (isAuth,setLoginStatus) => {
     );
   }
   return  <MainTab.Navigator>
-         <MainTab.Screen name="Home" component={HomeScreen} options={{headerShown:false}}/>
+    <MainTab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+    <MainTab.Screen name="Comments" component={CommentsScreen} options={{ headerShown: false }} />
+    <MainTab.Screen name="Map" component={MapScreen} options={{headerShown:false}}/>
        </MainTab.Navigator>
 }
 
