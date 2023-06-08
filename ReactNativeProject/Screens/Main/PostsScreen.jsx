@@ -1,27 +1,25 @@
-import { View, Text, StyleSheet, Image, FlatList,TouchableOpacity, } from "react-native";
+import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from "react-native";
 import user from "../../assets/images/user.png";
 import { useState, useEffect } from "react";
 import { MaterialIcons, Feather } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 
 export default function PostsScreen({ route }) {
+  console.log("ROUTE PARAMS",route.params)
   const navigation = useNavigation();
   const [posts, setPosts] = useState([]);
-  console.log(route.params);
 
   useEffect(() => {
     if (route.params) {
-      setPosts((prevState) => [...prevState, route.params]);
+      setPosts((prevState) => [route.params, ...prevState]);
     }
   }, [route.params]);
-
-  console.log("posts", posts);
 
   return (
     <View style={styles.container}>
       <View style={styles.postsWrapper}>
         <View style={styles.userWrapper}>
-          <Image source={user}></Image>
+          <Image source={user} />
           <View style={styles.userInfo}>
             <Text>Natali Romanova</Text>
             <Text>email@example.com</Text>
@@ -34,32 +32,38 @@ export default function PostsScreen({ route }) {
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
               <View style={styles.imageContainer}>
-                <Image source={{ uri: item.photo }} style={styles.image} />
+                {item && item.photo && (
+                  <Image source={{ uri: item.photo }} style={styles.image} />
+                )}
+                <View style={styles.captionContainer}>
+                  <Text style={styles.captionText}>{item.name}</Text>
+                  <View style={styles.iconContainer}>
+                    <View style={{ flexDirection: "row", alignItems: "center", gap: 9 }}>
+                      <Feather
+                        onPress={() => navigation.navigate('Comments')}
+                        name="message-circle"
+                        size={24}
+                        color="#FF6C00"
+                      />
+                      <Text>8</Text>
+                    </View>
+                    <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+                      <Feather
+                        onPress={() => navigation.navigate('Map', { location: route.params.location })}
+                        style={styles.pin}
+                        name="map-pin"
+                        size={24}
+                        color="#BDBDBD"
+                      />
+                      {item && item.place && (
+                        <Text style={{ textDecorationLine: "underline" }}>{item.place}</Text>
+                      )}
+                    </View>
+                  </View>
+                </View>
               </View>
-                
             )}
           />
-         <View
-                style={{
-                  gap: 9,
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <Feather onPress={()=>navigation.navigate('Comments')} name="message-circle" size={24} color="#FF6C00" />
-                <Text>8</Text>
-          </View>
-           <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
-            >
-              <Feather onPress={()=>navigation.navigate('Map')}
-                style={styles.pin}
-                name="map-pin"
-                size={24}
-                color="#BDBDBD"
-              />
-              <Text style={{ textDecorationLine: "underline" }}>Ukraine</Text>
-            </View>
         </View>
       </View>
     </View>
@@ -88,13 +92,26 @@ const styles = StyleSheet.create({
   imageContainer: {
     height: 240,
     width: "100%",
-    // paddingTop: 32,
     borderRadius: 8,
-    marginBottom: 91,
+    marginBottom: 30,
   },
   image: {
     flex: 1,
     resizeMode: "cover",
     borderRadius: 8,
+  },
+  captionContainer: {
+    marginTop: 8,
+  },
+  captionText: {
+    color: "#212121",
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  iconContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    // paddingHorizontal: 16,
+    marginTop: 8,
   },
 });
