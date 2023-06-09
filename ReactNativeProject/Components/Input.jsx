@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { TextInput, StyleSheet } from "react-native";
 
-export default function Input ({ placeholder, inputMode, secureTextEntry = false, value, setValue }) {
+export default function Input (props) {
     const [isFocused, setIsFocused] = useState(false);
 
     const handleFocus = () => {
@@ -11,16 +11,18 @@ export default function Input ({ placeholder, inputMode, secureTextEntry = false
         setIsFocused(false);
     };
     return (
-            <TextInput
+        <TextInput
+            {...props}
                 style={[styles.input, isFocused && styles.inputFocused]}
-                value={value}
-                placeholder={placeholder}
+                // value={value}
+                // placeholder={placeholder}
                 placeholderTextColor="#BDBDBD"
-                inputMode={inputMode}
+                // inputMode={inputMode}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
-                onChangeText={setValue}
-                secureTextEntry={secureTextEntry}/>
+                // onChangeText={setValue}
+            // secureTextEntry={secureTextEntry}
+        />
     );
 };
 

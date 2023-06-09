@@ -7,21 +7,22 @@ import bkgImage from "../../assets/images/Photo.png"
 import { useDispatch } from "react-redux";
 import { authSignIn } from "../../Redux/auth/authOperations";
 
+const initialState = {
+  email: "",
+  password: "",
+};
 
-export default function LoginScreen({ setLoginStatus }) {
+export default function LoginScreen() {
   const navigation = useNavigation();
-   const { height } = useWindowDimensions();
+  const { height } = useWindowDimensions();
+   const [data, setData] = useState(initialState);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const dispatch = useDispatch()
 
   const onSubmit = () => {
-    // setLoginStatus(true);
-        setEmail("");
-        setPassword("");
-    console.log({ email, password });
-     dispatch(authSignIn({email,password}))
+   
+    // console.log({ email, password });
+     dispatch(authSignIn(data.email,data.password))
     };
   
   const togglePasswordVisibility = () => {
@@ -37,8 +38,12 @@ export default function LoginScreen({ setLoginStatus }) {
             <View style={styles.registraionBox}>
               <Text style={styles.text}>Увійти</Text>
               <View style={styles.form}>
-                <Input placeholder="Адреса електронної пошти" inputMode="email" value={email} setValue={setEmail} />
-                <Input placeholder="Пароль" inputMode="text" secureTextEntry={!isPasswordVisible} value={password} setValue={setPassword} />
+                <Input placeholder="Адреса електронної пошти" inputMode="email" value={data.email}  onChangeText={(value) =>
+                  setData((prev) => ({ ...prev, email: value }))
+                } />
+                <Input placeholder="Пароль" inputMode="text" secureTextEntry={!isPasswordVisible} value={data.password}  onChangeText={(value) =>
+                  setData((prev) => ({ ...prev, password: value }))
+                } />
                   <TouchableOpacity style={styles.hideBtn} onPress={togglePasswordVisibility}>
                     <Text style={styles.hideText}>{isPasswordVisible ? 'Приховати' : 'Показати'}</Text>
                   </TouchableOpacity>
@@ -47,7 +52,7 @@ export default function LoginScreen({ setLoginStatus }) {
           </View>
         </KeyboardAvoidingView>
         <View style={styles.box}>
-         <Button text="Увійти" onPress={onSubmit}  />
+         <Button text="Увійти" onPress={()=>{onSubmit()}}  />
           <Text style={styles.signinText}> Немає акаунту?{" "}
             <Text  onPress={() => navigation.navigate("Registration")} style={[styles.signinText, styles.signinLink]}>
               Зареєструватися

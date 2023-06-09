@@ -9,21 +9,22 @@ import { authSignUp } from "../../Redux/auth/authOperations";
 import { useDispatch } from "react-redux";
 
 
+const initialState = {
+  nickname: '',
+  email: '',
+  password:'',
+}
+
 export default function RegistrationScreen() {
   const dispatch = useDispatch()
    const navigation = useNavigation();
    const { height } = useWindowDimensions();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [data, setData] = useState(initialState);
 
   const onSubmit = async () => {
-        setName("");
-        setEmail("");
-        setPassword("");
-    console.log({ name, email, password });
-    dispatch(authSignUp({name,email,password}))
+   console.log(data)
+    dispatch(authSignUp(data.email,data.password,data.nickname))
     };
   
   const togglePasswordVisibility = () => {
@@ -44,9 +45,15 @@ export default function RegistrationScreen() {
                 </View>
                 <Text style={styles.text}>Реєстрація</Text>
                 <View style={styles.form}>
-                   <Input placeholder="Логін" inputMode="text"  value={name} setValue={setName}/>
-                   <Input placeholder="Адреса електронної пошти" inputMode="email" value={email} setValue={setEmail} />
-                   <Input placeholder="Пароль" inputMode="text" secureTextEntry={!isPasswordVisible} value={password} setValue={setPassword} />
+                   <Input placeholder="Логін" inputMode="text"  value={data.nickname} onChangeText={(value) =>
+                  setData((prev) => ({ ...prev, nickname: value }))
+                }/>
+                   <Input placeholder="Адреса електронної пошти" inputMode="email" value={data.email} onChangeText={(value) =>
+                  setData((prev) => ({ ...prev, email: value }))
+                } />
+                   <Input placeholder="Пароль" inputMode="text" secureTextEntry={!isPasswordVisible} value={data.password} onChangeText={(value) =>
+                  setData((prev) => ({ ...prev, password: value }))
+                } />
                   <TouchableOpacity style={styles.hideBtn} onPress={togglePasswordVisibility}>
                     <Text style={styles.hideText}>{isPasswordVisible ? 'Приховати' : 'Показати'}</Text>
                   </TouchableOpacity>
@@ -55,7 +62,7 @@ export default function RegistrationScreen() {
             </View>
           </KeyboardAvoidingView>
           <View style={styles.box}>
-            <Button text="Зареєстуватися" onPress={onSubmit} />
+            <Button text="Зареєстуватися" onPress={()=>{dispatch(onSubmit)}} />
             <Text style={styles.loginText}> Вже є акаунт? 
               <Text onPress={() => navigation.navigate("Login")} style={styles.loginText}> Увійти</Text>
               </Text>
