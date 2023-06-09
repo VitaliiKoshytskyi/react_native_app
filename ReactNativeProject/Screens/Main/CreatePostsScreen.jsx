@@ -15,12 +15,15 @@ import * as ImagePicker from "expo-image-picker";
 import { useState, useEffect } from "react";
 import { requestCameraPermissionsAsync } from "expo-camera";
 import { useNavigation } from '@react-navigation/native';
+import { db } from "../../firebase/config";
+
 initialData = {
   name: "",
   place: "",
 };
 
 export default function CreatePostsScreen() {
+  
   const navigation = useNavigation();
   const [cameraPermission, setCameraPermission] = useState(null);
   const [keyboard, setKeyboard] = useState(false);
@@ -46,7 +49,15 @@ export default function CreatePostsScreen() {
   };
   const publish = postData.name && postData.place && image;
 
-  
+  const uploadPhotoToServer =  async () => {
+    const response = await fetch(image)
+    const file = await response.blob();
+
+    const uniquePostId = Date.now().toString()
+
+    const data = await db.storage().ref(`postImage/${uniquePostId}`).put(file)
+    console.log("data",data)
+  }
 
   const takePhoto = async () => {
     let result = await ImagePicker.launchCameraAsync({
@@ -139,7 +150,9 @@ export default function CreatePostsScreen() {
           {publish ? (
             <TouchableOpacity
               style={{ ...styles.btn, backgroundColor: "#FF6C00" }}
-              onPress={() => {setPostData(initialData);
+              onPress={() => {
+                setPostData(initialData);
+                uploadPhotoToServer()
               setImage(null);
                 navigation.navigate("Home", {
                   screen: "PostsScreen",
@@ -239,3 +252,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+
+
+
+//  navigation.navigate("Home", {
+//                   screen: "PostsScreen",
+//                   params: { ...postData, photo: image, location:location },
+//                 });
