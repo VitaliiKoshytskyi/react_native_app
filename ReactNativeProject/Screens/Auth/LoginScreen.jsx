@@ -4,6 +4,8 @@ import Button from "../../Components/Button";
 import React, { useState } from "react";
 import { useNavigation } from '@react-navigation/native';
 import bkgImage from "../../assets/images/Photo.png"
+import { useDispatch } from "react-redux";
+import { authSignIn } from "../../Redux/auth/authOperations";
 
 
 export default function LoginScreen({ setLoginStatus }) {
@@ -12,12 +14,14 @@ export default function LoginScreen({ setLoginStatus }) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch()
 
   const onSubmit = () => {
-    setLoginStatus(true);
+    // setLoginStatus(true);
         setEmail("");
         setPassword("");
-        console.log({ email, password });
+    console.log({ email, password });
+     dispatch(authSignIn({email,password}))
     };
   
   const togglePasswordVisibility = () => {

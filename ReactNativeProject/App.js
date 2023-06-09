@@ -5,12 +5,23 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useState, useEffect } from "react";
+import { Provider } from 'react-redux'
+import {store} from './Redux/store'
 
 import LoginScreen from './Screens/Auth/LoginScreen';
 import RegistrationScreen from './Screens/Auth/RegistrationScreen';
 import HomeScreen from './Screens/Main/Home';
 import CommentsScreen from './Screens/Main/CommentsScreen'
 import MapScreen from './Screens/Main/MapScreen'
+import { 
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    updateProfile,
+    getAuth
+} from 'firebase/auth';
+import { auth } from './firebase/config';
+import {db} from './firebase/config'
 
 const AuthStack = createStackNavigator();
 const MainTab = createStackNavigator();
@@ -36,9 +47,19 @@ const useRoute = (isAuth,setLoginStatus) => {
 }
 
 export default function App() {
-   const [loginStatus, setLoginStatus] = useState(false);
+  // const [loginStatus, setLoginStatus] = useState(false);
+   const [user, setUser] = useState(null);
+  
 
-const routing = useRoute(loginStatus,setLoginStatus)
+
+  const unsubscribe = auth.onAuthStateChanged((user) => {
+      console.log("USER",user)
+     setUser(user)
+    });
+  // db.auth().onAuthStateChanged((user)=>setUser(user))
+
+
+const routing = useRoute(user)
 
   const [fontLoaded] = useFonts({
     "Roboto-regular": require("./assets/fonts/Roboto/Roboto-Regular.ttf"),
@@ -50,9 +71,11 @@ const routing = useRoute(loginStatus,setLoginStatus)
     return null;
   }
    return (
-     <NavigationContainer>
+     <Provider store={store}>
+       <NavigationContainer>
       {routing}
-     </NavigationContainer>
+       </NavigationContainer>
+     </Provider>
 
   )
 }
