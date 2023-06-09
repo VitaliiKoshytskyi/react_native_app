@@ -1,5 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import LoginScreen from "../Screens/Auth/LoginScreen";
 import RegistrationScreen from "../Screens/Auth/RegistrationScreen";
@@ -8,6 +8,7 @@ import Home from "../Screens/Main/Home";
 import CommentsScreen from '../Screens/Main/CommentsScreen'
 import MapScreen from '../Screens/Main/MapScreen'
 import { useEffect } from "react";
+import { authStateChanged } from "../Redux/auth/authOperations";
 
 const useRoute = (userID) => {
   const AuthStack = createStackNavigator();
@@ -55,8 +56,13 @@ const useRoute = (userID) => {
 
 export const Main = () => {
   const userID = useSelector((state) => state.auth.userID);
+  const dispatch = useDispatch();
+// const { stateChange } = useSelector((state) => state.auth);
+  // useEffect(() => {
+  //   dispatch(authStateChanged());
+  // }, [dispatch]);
 
-  useEffect(() => {}, [userID]);
+  // useEffect(() => {}, [userID]);
 
   const routing = useRoute(userID);
 
