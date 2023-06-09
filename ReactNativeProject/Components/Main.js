@@ -42,10 +42,11 @@ const useRoute = (userID) => {
         }}
           />
           <MainStack.Screen name="Map" component={MapScreen} options={{ headerShown: false }} />
-          <MainStack.Screen name="Comments" component={CommentsScreen} options={{headerShown:false}}/>
+          <MainStack.Screen name="Comments" component={CommentsScreen}  options={{ title: "Коментарі", headerTitleAlign: "center", }}/>
       <MainStack.Screen
         name="CreatePostsScreen"
-        options={{ title: "Створити публікацію" }}
+              options={{ title: "Створити публікацію", headerTitleAlign: "center", }}
+              
         component={CreatePostsScreen}
       ></MainStack.Screen>
     </MainStack.Navigator>

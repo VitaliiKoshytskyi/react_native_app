@@ -40,7 +40,7 @@ export default function PostsScreen({ route }) {
                   <View style={styles.iconContainer}>
                     <View style={{ flexDirection: "row", alignItems: "center", gap: 9 }}>
                       <Feather
-                        onPress={() => navigation.navigate('Comments')}
+                        onPress={() => navigation.navigate('Comments',{photo:route.params})}
                         name="message-circle"
                         size={24}
                         color="#FF6C00"

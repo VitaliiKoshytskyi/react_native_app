@@ -73,7 +73,7 @@ export default function CreatePostsScreen() {
       setLocation(coords);
     })();
   }, []);
-// console.log("location",location)
+
 
   return (
     <TouchableWithoutFeedback onPress={hideKeyboard}>
