@@ -1,25 +1,20 @@
-import { auth } from "../../firebase/config";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  updateProfile,
-  onAuthStateChanged
-} from "firebase/auth";
+import { getAuth } from "firebase/auth";
+import firebase from '../../firebase/config'
+import { createUserWithEmailAndPassword,  signInWithEmailAndPassword, signOut, updateProfile, onAuthStateChanged} from "firebase/auth";
 import { authSlice } from "./authReducer";
 
-const { updateUserInfo, userSignOut,authStateChange } = authSlice.actions;
+const { updateUserInfo, userSignOut, authStateChange,updateAvatar } = authSlice.actions;
+const auth = getAuth(firebase);
 
 export const authSignIn = (email, password) => async (dispatch, getState) => {
-  console.log("LOGIN ", email, password);
   try {
     const { user } = await signInWithEmailAndPassword(auth, email, password);
-    // console.log(user);
     dispatch(
       updateUserInfo({
         userID: user.uid,
         email: user.email,
         nickname: user.displayName,
+        photoURL:user.photoURL,
       })
     );
   } catch (error) {
@@ -27,28 +22,29 @@ export const authSignIn = (email, password) => async (dispatch, getState) => {
   }
 };
 
-export const authSignUp = (email, password, nickname) => async (dispatch, getState) => {
-    console.log("REG ", email, password);
+export const authSignUp = (email, password, nickname,photoURL) => async (dispatch, getState) => {
     try {
       const { user } = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      const updated = await updateProfile(auth.currentUser, {
-        displayName: nickname,
+       await updateProfile(auth.currentUser, {
+         displayName: nickname,
+         photoURL:photoURL,
       });
       dispatch(
         updateUserInfo({
           userID: user.uid,
           email: user.email,
           nickname: nickname,
+          photoURL:photoURL,
         })
       );
     } catch (error) {
       console.log(error);
     }
-  };
+};
 
 export const authSignOut = () => async (dispatch, getState) => {
   try {
@@ -59,23 +55,36 @@ export const authSignOut = () => async (dispatch, getState) => {
   }
 };
 
-export const authStateChanged = () => async (dispatch, getState) => {
+export const authStateChangeUser = () => async (dispatch, getState) => {
   try {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        dispatch(
-          updateUserInfo({
-            userID: user.uid,
-            email: user.email,
-            nickname: user.displayName,
-          })
-        );
-       
-      } else {
-       dispatch(authStateChange({ stateChange: true }));
+        const { uid, displayName, photoURL, email } = auth.currentUser;
+        const userUpdateProfile = {
+          nickName: displayName,
+          userID: uid,
+          photoURL: photoURL,
+          email: email,
+        };
+        dispatch(authStateChange({ stateChange: true }));
+        dispatch(updateUserInfo(userUpdateProfile));
       }
     });
   } catch (error) {
-    console.log(error);
+    console.log('Error occurred:', error);
+  }
+};
+
+export const updateUserAvatar = (newPhotoURL) => async (dispatch) => {
+  if (auth.currentUser) {
+    try {
+      await updateProfile(auth.currentUser, {
+        photoURL: newPhotoURL,
+      });
+      const { photoURL } = auth.currentUser;
+      dispatch(updateAvatar({ photoURL: photoURL }));
+    } catch (error) {
+      dispatch(authError(error.message));
+    }
   }
 };

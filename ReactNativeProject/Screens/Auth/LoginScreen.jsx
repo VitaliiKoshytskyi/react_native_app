@@ -1,11 +1,11 @@
 import {Text,View,ImageBackground,StyleSheet, useWindowDimensions, TouchableOpacity,Keyboard,TouchableWithoutFeedback,Platform,KeyboardAvoidingView,} from "react-native";
-import Input from "../../Components/Input";
-import Button from "../../Components/Button";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigation } from '@react-navigation/native';
-import bkgImage from "../../assets/images/Photo.png"
 import { useDispatch } from "react-redux";
 import { authSignIn } from "../../Redux/auth/authOperations";
+import Button from "../../Components/Button";
+import Input from "../../Components/Input";
+import bkgImage from "../../assets/images/Photo.png"
 
 const initialState = {
   email: "",
@@ -13,18 +13,15 @@ const initialState = {
 };
 
 export default function LoginScreen() {
-  const navigation = useNavigation();
-  const { height } = useWindowDimensions();
-   const [data, setData] = useState(initialState);
+  const [data, setData] = useState(initialState);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const { height } = useWindowDimensions();
   const dispatch = useDispatch()
+  const navigation = useNavigation();
 
   const onSubmit = () => {
-   
-    // console.log({ email, password });
-     dispatch(authSignIn(data.email,data.password))
+    dispatch(authSignIn(data.email,data.password))
     };
-  
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };

@@ -14,14 +14,12 @@ export default function Input (props) {
         <TextInput
             {...props}
                 style={[styles.input, isFocused && styles.inputFocused]}
-                // value={value}
-                // placeholder={placeholder}
+                
                 placeholderTextColor="#BDBDBD"
-                // inputMode={inputMode}
+                
                 onFocus={handleFocus}
                 onBlur={handleBlur}
-                // onChangeText={setValue}
-            // secureTextEntry={secureTextEntry}
+            
         />
     );
 };

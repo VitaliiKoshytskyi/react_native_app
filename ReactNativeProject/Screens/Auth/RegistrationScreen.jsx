@@ -1,12 +1,15 @@
-import {Text,View,StyleSheet,ImageBackground,useWindowDimensions,TouchableOpacity,Keyboard,TouchableWithoutFeedback,Platform,KeyboardAvoidingView,} from "react-native";
+import {Text,View,StyleSheet,ImageBackground,Pressable,useWindowDimensions,TouchableOpacity,Keyboard,TouchableWithoutFeedback,Platform,KeyboardAvoidingView,Image,ActivityIndicator} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import Input from "../../Components/Input";
-import Button from "../../Components/Button";
-import React, { useState } from "react";
 import { useNavigation } from '@react-navigation/native';
-import bkgImage from "../../assets/images/Photo.png"
+import { useState } from "react";
 import { authSignUp } from "../../Redux/auth/authOperations";
 import { useDispatch } from "react-redux";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import * as ImagePicker from "expo-image-picker";
+import firebase from "../../firebase/config";
+import Button from "../../Components/Button";
+import Input from "../../Components/Input";
+import bkgImage from "../../assets/images/Photo.png"
 
 
 const initialState = {
@@ -17,16 +20,45 @@ const initialState = {
 
 export default function RegistrationScreen() {
   const dispatch = useDispatch()
-   const navigation = useNavigation();
-   const { height } = useWindowDimensions();
+  const navigation = useNavigation();
+  const { height } = useWindowDimensions();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [data, setData] = useState(initialState);
+  const [state, setState] = useState("");
+  const [image, setImage] = useState(null);
+  
+  const uploadPhotoToServer = async () => {
+    const storage = getStorage(firebase);
+    const filename = image.substring(image.lastIndexOf("/") + 1);
+    const photo = await fetch(image);
+    const blob = await photo.blob();
+    const storageRef = ref(storage, "avatars/" + filename);
+    try {
+      setState(`loading`);
+      await uploadBytes(storageRef, blob);
+      const processedPhoto = await getDownloadURL(storageRef);
+      return processedPhoto;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const onSubmit = async () => {
-   console.log(data)
-    dispatch(authSignUp(data.email,data.password,data.nickname))
+   const URL = await uploadPhotoToServer();
+    dispatch(authSignUp(data.email, data.password, data.nickname, URL));
+    setState("");
     };
   
+   const pick = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
@@ -38,11 +70,23 @@ export default function RegistrationScreen() {
           <KeyboardAvoidingView style={styles.innerBox} behavior={Platform.OS === "ios" ? "padding" : "height"} >
             <View style={styles.registraionBox}>
               <View style={styles.registraionOuterBox}>
-                <View style={styles.profilePhoto}>
-                  <View style={styles.icon}>
-                    <AntDesign name="pluscircleo" size={25} color="#FF6C00"/>
+                 {image ? (<View style={styles.uploadwrapper}>
+                  <View style={styles.upload}>
+                  <Image style={styles.upload} source={{ uri: image }} />
+                  <Pressable onPress={() => setImage(null)} style={styles.addicon}>
+                    <AntDesign name="closecircleo" size={25} color="#FF6C00" />
+                    </Pressable>
+                    </View>
+                </View>
+              ) : (
+                <View style={styles.uploadwrapper}>
+                  <View style={styles.upload}>
+                    <Pressable onPress={pick} style={styles.addicon}>
+                      <AntDesign name="pluscircleo" size={25} color="#FF6C00" />
+                    </Pressable>
                   </View>
                 </View>
+              )}
                 <Text style={styles.text}>Реєстрація</Text>
                 <View style={styles.form}>
                    <Input placeholder="Логін" inputMode="text"  value={data.nickname} onChangeText={(value) =>
@@ -80,6 +124,31 @@ const styles = StyleSheet.create({
   },
   innerBox: {
     flex: 1,
+  },
+  uploadwrapper: {
+      
+    marginTop: -60,
+      marginBottom: 32,
+      alignItems: "center",
+   
+  },
+   addicon: {
+    position: "absolute",
+    right: -13,
+    bottom: 14,
+  },
+  removeicon: {
+    position: "absolute",
+    right: "32%",
+    bottom:15,
+   },
+  upload: {
+    width: 120,
+    height: 120,
+    borderColor: "#E8E8E8",
+    borderWidth: 1,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 16,
   },
   input: {
     minWidth: 343,
@@ -119,12 +188,9 @@ const styles = StyleSheet.create({
     marginLeft: -60,
     marginTop: -60,
   },
-  icon: {
-    position: "absolute",
-    top: "65%",
-    left: "90%",
-  },
+
   registraionOuterBox: {
+    position:"relative",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     borderBottomLeftRadius: 0,
@@ -133,7 +199,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   text: {
-    marginTop: 92,
+    
     marginBottom: 33,
     fontFamily: "Roboto-regular",
     fontSize: 30,
