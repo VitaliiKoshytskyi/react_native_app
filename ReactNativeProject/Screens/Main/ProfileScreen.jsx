@@ -68,8 +68,6 @@ const getCommentsCount = async (postId) => {
     }
   };
 
-
-
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center",}}>
       <ImageBackground source={require("../../assets/images/Photo.png")} style={styles.background}>
